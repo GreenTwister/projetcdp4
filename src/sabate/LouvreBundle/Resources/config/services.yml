@@ -1,0 +1,4 @@
+services:
+#    sabate_louvre.example:
+#        class: sabate\LouvreBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
