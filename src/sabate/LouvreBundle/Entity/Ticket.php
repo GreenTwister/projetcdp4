@@ -3,7 +3,6 @@
 namespace sabate\LouvreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Ticket
  *
@@ -222,5 +221,28 @@ class Ticket
     {
         return $this->price;
     }
-}
 
+    /**
+     * Set booking
+     *
+     * @param \sabate\LouvreBundle\Entity\Booking $booking
+     *
+     * @return Ticket
+     */
+    public function setBooking(Booking $booking)
+    {
+        $this->booking = $booking;
+
+        return $this;
+    }
+
+    /**
+     * Get booking
+     *
+     * @return \sabate\LouvreBundle\Entity\Booking
+     */
+    public function getBooking()
+    {
+        return $this->booking;
+    }
+}
