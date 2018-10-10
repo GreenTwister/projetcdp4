@@ -11,6 +11,11 @@
         </div>
 
         <div class="form-group">
+            {{ form_label(formBook.typeTicket, "Chosissez le type de(s) billet(s) (à partir de 14h le billet ne peut être que Demi-journée) ") }}
+            {{ form_widget(formBook.typeTicket) }}
+        </div>
+
+        <div class="form-group">
             {{ form_label(formBook.nbrTicket, "Chosissez le nombre de billet(s) ") }}
             {{ form_widget(formBook.nbrTicket) }}
         </div>

@@ -5,6 +5,7 @@ namespace sabate\LouvreBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,6 +20,12 @@ class BookingType extends AbstractType
             ->add('dateVisit', DateType::class)
             ->add('nbrTicket')
             ->add('email')
+            ->add('typeTicket', choiceType::class, array(
+                'choices' => array(
+                    'Journée' => 'Journée',
+                    'Demi-journée' => 'Demi-journée'
+                ),
+            ))
             ->add('save',  SubmitType::class, array('label' => ' Suivant '));
     }/**
      * {@inheritdoc}
