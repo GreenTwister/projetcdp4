@@ -36,6 +36,13 @@ class Booking
     private $nbrTicket;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="TypeTicket", type="string")
+     */
+    private $typeTicket;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="Email", type="string", length=255)
@@ -92,6 +99,30 @@ class Booking
     public function getDateVisit()
     {
         return $this->dateVisit;
+    }
+
+    /**
+     * Set typeTicket
+     *
+     * @param string $typeTicket
+     *
+     * @return Booking
+     */
+    public function setTypeTicket($typeTicket)
+    {
+        $this->typeTicket = $typeTicket;
+
+        return $this;
+    }
+
+    /**
+     * Get typeTicket
+     *
+     * @return string
+     */
+    public function getTypeTicket()
+    {
+        return $this->typeTicket;
     }
 
     /**
