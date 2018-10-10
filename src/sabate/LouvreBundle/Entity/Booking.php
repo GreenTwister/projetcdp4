@@ -56,7 +56,10 @@ class Booking
      */
     private $total;
 
-
+    public function __construct()
+    {
+        $this->dateVisit         = new \Datetime();
+    }
     /**
      * Get id
      *
