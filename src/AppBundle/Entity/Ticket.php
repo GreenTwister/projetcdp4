@@ -1,13 +1,13 @@
 <?php
 
-namespace sabate\LouvreBundle\Entity;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 /**
  * Ticket
  *
  * @ORM\Table(name="ticket")
- * @ORM\Entity(repositoryClass="sabate\LouvreBundle\Repository\TicketRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TicketRepository")
  */
 class Ticket
 {
@@ -63,7 +63,7 @@ class Ticket
     private $price;
 
     /**
-     * @ORM\ManyToOne(targetEntity="sabate\LouvreBundle\Entity\Booking")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Booking", inversedBy="tickets")
      * @ORM\JoinColumn(nullable=false)
      */
     private $booking;
@@ -225,7 +225,7 @@ class Ticket
     /**
      * Set booking
      *
-     * @param \sabate\LouvreBundle\Entity\Booking $booking
+     * @param \AppBundle\Entity\Booking $booking
      *
      * @return Ticket
      */
@@ -239,7 +239,7 @@ class Ticket
     /**
      * Get booking
      *
-     * @return \sabate\LouvreBundle\Entity\Booking
+     * @return \AppBundle\Entity\Booking
      */
     public function getBooking()
     {

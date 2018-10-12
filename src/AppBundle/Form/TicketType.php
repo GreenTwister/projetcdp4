@@ -1,11 +1,12 @@
 <?php
 
-namespace sabate\LouvreBundle\Form;
+namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,12 +17,12 @@ class TicketType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name')
-            ->add('surname')
-            ->add('birthDate', DateType::class)
-            ->add('nationality')
-            ->add('tarifRed', checkboxType::class , array('label' => ' à cocher si vous avez droit à un tarif réduit ( Justificatif obligatoire à l\'entrée)'))
-            ->add('save',      SubmitType::class, array('label' => ' Suivant '));
+        $builder->add('name', TextType::class, array('label' => 'Nom'))
+            ->add('surname', TextType::class, array('label' => 'Prénom'))
+            ->add('birthDate', DateType::class, array('label' => 'Date de Naissance'))
+            ->add('nationality', TextType::class, array('label' => 'Nationalité'))
+            ->add('tarifRed', checkboxType::class , array('label' => ' à cocher si vous avez droit à un tarif réduit ( Justificatif obligatoire à l\'entrée)'));
+
     }
     /**
      * {@inheritdoc}
@@ -29,7 +30,7 @@ class TicketType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'sabate\LouvreBundle\Entity\Ticket'
+            'data_class' => 'AppBundle\Entity\Ticket'
         ));
     }
 

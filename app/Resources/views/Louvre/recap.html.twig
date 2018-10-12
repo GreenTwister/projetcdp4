@@ -1,4 +1,4 @@
-{% extends '@sabateLouvre/layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block body %}
     <h1>Voici le récapitulatif de votre commande : </h1>
@@ -6,17 +6,21 @@
     <table class="table">
         <thead class="thead-light">
         <tr>
-            <th>Firstname</th>
-            <th>Lastname</th>
+            <th>Nom</th>
+            <th>Prénom</th>
             <th>Email</th>
         </tr>
         </thead>
         <tbody>
+        {% for ticket in booking.tickets %}
         <tr>
-            <td>John</td>
+
+            <td>{{ ticket.name }}</td>
+            <td>{{ ticket.surname }}</td>
             <td>Doe</td>
             <td>john@example.com</td>
         </tr>
+        {% endfor %}
         <tr>
             <td>Mary</td>
             <td>Moe</td>

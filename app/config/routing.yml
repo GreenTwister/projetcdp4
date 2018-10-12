@@ -1,7 +1,3 @@
-sabate_louvre:
-    resource: "@sabateLouvreBundle/Controller/"
-    type:     annotation
-    prefix:   /
 
 app:
     resource: '@AppBundle/Controller/'

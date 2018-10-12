@@ -1,14 +1,15 @@
 <?php
 
-namespace sabate\LouvreBundle\Entity;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Booking
  *
  * @ORM\Table(name="booking")
- * @ORM\Entity(repositoryClass="sabate\LouvreBundle\Repository\BookingRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BookingRepository")
  */
 class Booking
 {
@@ -25,6 +26,7 @@ class Booking
      * @var \DateTime
      *
      * @ORM\Column(name="DateVisit", type="datetime")
+     * @Assert\GreaterThanOrEqual("today")
      */
     private $dateVisit;
 
@@ -62,6 +64,11 @@ class Booking
      * @ORM\Column(name="total", type="integer")
      */
     private $total;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Ticket", mappedBy="booking")
+     */
+    private $tickets;
 
     public function __construct()
     {
@@ -220,5 +227,39 @@ class Booking
     {
         return $this->total;
     }
-}
 
+    /**
+     * Add ticket
+     *
+     * @param \AppBundle\Entity\Ticket $ticket
+     *
+     * @return Booking
+     */
+    public function addTicket(\AppBundle\Entity\Ticket $ticket)
+    {
+        $this->tickets[] = $ticket;
+        $ticket->setBooking($this);
+        return $this;
+
+    }
+
+    /**
+     * Remove ticket
+     *
+     * @param \AppBundle\Entity\Ticket $ticket
+     */
+    public function removeTicket(\AppBundle\Entity\Ticket $ticket)
+    {
+        $this->tickets->removeElement($ticket);
+    }
+
+    /**
+     * Get tickets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+}

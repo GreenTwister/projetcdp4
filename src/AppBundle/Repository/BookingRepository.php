@@ -1,6 +1,6 @@
 <?php
 
-namespace sabate\LouvreBundle\Repository;
+namespace AppBundle\Repository;
 
 /**
  * BookingRepository

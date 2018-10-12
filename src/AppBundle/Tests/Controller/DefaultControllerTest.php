@@ -1,6 +1,6 @@
 <?php
 
-namespace sabate\LouvreBundle\Tests\Controller;
+namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

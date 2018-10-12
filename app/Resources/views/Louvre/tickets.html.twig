@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    {{ form(formTicket) }}
+    Ici on récupère les données en session et on affiche le formulaire des tickets !
+    Entity Tickets = Id/Nom/Prenom/DateNaissance/Nationalité/TarifRed/Price
+    Cliquez <a href=" {{ path('recap') }}">ici </a>
+
+
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
