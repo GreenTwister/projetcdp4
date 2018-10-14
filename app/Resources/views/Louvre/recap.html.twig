@@ -9,16 +9,16 @@
             <th>Nom</th>
             <th>Prénom</th>
             <th>Email</th>
+            <th>Tarifs</th>
         </tr>
         </thead>
-        <tbody>
         {% for ticket in booking.tickets %}
+        <tbody>
         <tr>
-
-            <td>{{ ticket.name }}</td>
+            <td>{{ ticket.name}}</td>
             <td>{{ ticket.surname }}</td>
-            <td>Doe</td>
-            <td>john@example.com</td>
+            <td>{{ booking.email }}</td>
+            <td>10 euros</td>
         </tr>
         {% endfor %}
         <tr>

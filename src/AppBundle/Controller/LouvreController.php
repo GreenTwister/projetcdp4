@@ -37,19 +37,26 @@ class LouvreController extends Controller
     public function ticketsAction(Request $request, SessionInterface $session)
     {
         $booking = $session->get('booking');
-        for ($i = 0; $i < $booking->getNbrTicket(); $i++){
-            $booking->addTicket(new Ticket());
+
+        if ($booking == null){
+            return $this->redirectToRoute('home');
         }
+
+        for ($i = 0; $i < $booking->getNbrTicket(); $i++){
+                $booking->addTicket(new Ticket());
+        }
+
         $form = $this->createForm(BookingFillTicketsType::class, $booking);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $session->set('booking', $form->getData());
+            $session->set('booking', $booking);
             return $this->redirectToRoute('recap');
         }
         return $this->render('Louvre/tickets.html.twig', array(
             'formTicket' => $form->createView(),
-            'booking' => $booking
+            'ticket' => $booking
         ));
     }
 
@@ -59,9 +66,11 @@ class LouvreController extends Controller
     public function recapAction(SessionInterface $session)
     {
         $booking = $session->get('booking');
+
         foreach($booking->getTickets() as $ticket){
             $ticket->setBooking($booking);
         }
+        dump($booking);
         return $this->render('Louvre/recap.html.twig', array(
             'booking' => $booking
         ));

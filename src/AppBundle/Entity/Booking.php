@@ -262,4 +262,5 @@ class Booking
     {
         return $this->tickets;
     }
+
 }
