@@ -2,11 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Booking;
 use AppBundle\Entity\Ticket;
 use AppBundle\Form\BookingFillTicketsType;
 use AppBundle\Form\BookingType;
 use AppBundle\Form\TicketType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use AppBundle\Manager\CheckManager;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -18,8 +20,11 @@ class LouvreController extends Controller
      */
     public function indexAction(Request $request, SessionInterface $session)
     {
+        $booking = new Booking();
+
         $form = $this->createForm(BookingType::class);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -42,8 +47,11 @@ class LouvreController extends Controller
             return $this->redirectToRoute('home');
         }
 
-        for ($i = 0; $i < $booking->getNbrTicket(); $i++){
-                $booking->addTicket(new Ticket());
+        if(!$request->isMethod('POST')){
+
+          for ($i = 0; $i < $booking->getNbrTicket(); $i++){
+               $booking->addTicket(new Ticket());
+           }
         }
 
         $form = $this->createForm(BookingFillTicketsType::class, $booking);
@@ -56,7 +64,7 @@ class LouvreController extends Controller
         }
         return $this->render('Louvre/tickets.html.twig', array(
             'formTicket' => $form->createView(),
-            'ticket' => $booking
+            'booking' => $booking
         ));
     }
 
@@ -67,12 +75,17 @@ class LouvreController extends Controller
     {
         $booking = $session->get('booking');
 
-        foreach($booking->getTickets() as $ticket){
-            $ticket->setBooking($booking);
-        }
-        dump($booking);
+        // Calcule le prix de chaque billet en fonction de l'age
+        $checkoutManager = $this->get('check.manager');
+        $checkoutManager->setPricesTicketsInBooking($booking);
+
+        // Calcule le prix total de la commande
+        $cumulPrice = $checkoutManager->getTotalPriceForBooking($booking);
+        $booking->setTotal($cumulPrice);
+
         return $this->render('Louvre/recap.html.twig', array(
-            'booking' => $booking
+            'booking' => $booking,
+            'total' => $cumulPrice
         ));
     }
 }

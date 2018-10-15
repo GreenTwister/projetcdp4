@@ -21,7 +21,10 @@ class TicketType extends AbstractType
             ->add('surname', TextType::class, array('label' => 'Prénom'))
             ->add('birthDate', DateType::class, array('label' => 'Date de Naissance'))
             ->add('nationality', TextType::class, array('label' => 'Nationalité'))
-            ->add('tarifRed', checkboxType::class , array('label' => ' à cocher si vous avez droit à un tarif réduit ( Justificatif obligatoire à l\'entrée)'));
+            ->add('tarifRed', checkboxType::class , array(
+                'label' => ' à cocher si vous avez droit à un tarif réduit ( Justificatif obligatoire à l\'entrée)',
+                'required' => false,
+            ));
 
     }
     /**
