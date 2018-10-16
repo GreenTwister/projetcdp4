@@ -1,7 +1,9 @@
 {% extends 'layout.html.twig' %}
 
 {% block body %}
-
+    {% for message in app.session.flashbag.get('warning') %}
+        <p>Message flash : {{ message }}</p>
+    {% endfor %}
     <div class="well">
 
         {{ form_start(formBook) }}
@@ -14,13 +16,6 @@
 
         {{ form_end(formBook) }}
     </div>
-    Bienvenue sur la page d'accueil
-
-    Ici vous allez trouver le formulaire dès qu'il sera pret :D Je suis au bon endroit
-
-    Ici il y aura le 1er formulaire à savoir = entity Booking : Id/JourViste/TypeBillet/NombreBillet/Email/NumCommande/Total
-
-    Cliquez <a href=" {{ path('tickets') }}">ici </a>
 
 {% endblock %}
 

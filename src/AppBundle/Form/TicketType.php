@@ -19,7 +19,10 @@ class TicketType extends AbstractType
     {
         $builder->add('name', TextType::class, array('label' => 'Nom'))
             ->add('surname', TextType::class, array('label' => 'Prénom'))
-            ->add('birthDate', DateType::class, array('label' => 'Date de Naissance'))
+            ->add('birthDate', DateType::class, array(
+                'label' => 'Date de Naissance',
+                'years' => range(date('Y'), date('Y') - 100)
+            ))
             ->add('nationality', TextType::class, array('label' => 'Nationalité'))
             ->add('tarifRed', checkboxType::class , array(
                 'label' => ' à cocher si vous avez droit à un tarif réduit ( Justificatif obligatoire à l\'entrée)',

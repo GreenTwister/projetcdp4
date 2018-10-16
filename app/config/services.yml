@@ -33,6 +33,7 @@ services:
     check.manager:
         class: AppBundle\Manager\CheckManager
         arguments:
+        - "@session"
         - "%tarif_enfant_0_4_ans%"
         - "%tarif_enfant_4_12_ans%"
         - "%tarif_normal%"

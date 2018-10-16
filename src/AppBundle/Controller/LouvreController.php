@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class LouvreController extends Controller
 {
@@ -21,10 +22,8 @@ class LouvreController extends Controller
     public function indexAction(Request $request, SessionInterface $session)
     {
         $booking = new Booking();
-
         $form = $this->createForm(BookingType::class);
         $form->handleRequest($request);
-
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -44,6 +43,13 @@ class LouvreController extends Controller
         $booking = $session->get('booking');
 
         if ($booking == null){
+            return $this->redirectToRoute('home');
+        }
+
+        // Vérifie si la date n'est pas mardi ou dimanche
+        $manager = $this->get('check.manager');
+        $bookingValid = $manager->checkBookingValid($booking);
+        if (!$bookingValid) {
             return $this->redirectToRoute('home');
         }
 

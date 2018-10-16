@@ -5,30 +5,27 @@
 
     <table class="table">
         <thead class="thead-light">
-        <tr>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Email</th>
-            <th>Tarifs</th>
-        </tr>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Tarifs</th>
+            </tr>
         </thead>
+
         {% for ticket in booking.tickets %}
-        <tbody>
-        <tr>
-            <td>{{ ticket.name}}</td>
-            <td>{{ ticket.surname }}</td>
-            <td>{{ booking.email }}</td>
-            <td>{{ ticket.price }}</td>
-        </tr>
+            <tbody>
+                <tr>
+                    <td>{{ ticket.name}}</td>
+                    <td>{{ ticket.surname }}</td>
+                    <td>{{ booking.email }}</td>
+                    <td>{{ ticket.price }}</td>
+                </tr>
+            </tbody>
         {% endfor %}
 
         Le prix total est de {{ total }} €
-        <tr>
-            <td>July</td>
-            <td>Dooley</td>
-            <td>july@example.com</td>
-        </tr>
-        </tbody>
+
     </table>
 
 {% endblock %}
