@@ -2,7 +2,9 @@
 
 {% block body %}
     {% for message in app.session.flashbag.get('warning') %}
-        <p>Message flash : {{ message }}</p>
+        <div class="alert alert-danger">
+            <p><strong>Attention !</strong> : {{ message }}</p>
+        </div>
     {% endfor %}
     <div class="well">
 

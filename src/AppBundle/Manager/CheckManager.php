@@ -66,6 +66,7 @@ class CheckManager
     public function checkBookingValid($booking)
     {
         $date = $booking->getDateVisit();
+
         // Si date est un mardi ou dimanche
         $day = $date->format('D');
         if ($day == "Tue" || $day == "Sun") {
