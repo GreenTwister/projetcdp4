@@ -7,7 +7,7 @@ services:
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services
-#        autowire: true
+        autowire: true
         # automatically registers your services as commands, event subscribers, etc.
         autoconfigure: true
         # this means you cannot fetch services directly from the container via $container->get()
@@ -30,13 +30,10 @@ services:
         tags: ['controller.service_arguments']
 
     # add more services, or override services that need manual wiring
-    check.manager:
-        class: AppBundle\Manager\CheckManager
+    AppBundle\Manager\CheckManager:
         arguments:
-        - "@session"
-        - "%tarif_enfant_0_4_ans%"
-        - "%tarif_enfant_4_12_ans%"
-        - "%tarif_normal%"
-        - "%tarif_senior%"
-        - "%tarif_reduit%"
-        public: true
+            $tarifGratuit: "%tarif_gratuit%"
+            $tarifEnfant: "%tarif_enfant%"
+            $tarifNormal: "%tarif_normal%"
+            $tarifSenior: "%tarif_senior%"
+            $tarifReduit: "%tarif_reduit%"

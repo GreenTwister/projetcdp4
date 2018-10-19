@@ -4,12 +4,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as LouvreAssert;
 
 /**
  * Booking
  *
  * @ORM\Table(name="booking")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BookingRepository")
+ * @LouvreAssert\ValidHalfDay()
  */
 class Booking
 {
@@ -27,6 +29,9 @@ class Booking
      *
      * @ORM\Column(name="DateVisit", type="datetime")
      * @Assert\GreaterThanOrEqual("today")
+     * @LouvreAssert\NotTuesday()
+     * @LouvreAssert\NotSunday()
+     * @LouvreAssert\ClosedDay()
      */
     private $dateVisit;
 

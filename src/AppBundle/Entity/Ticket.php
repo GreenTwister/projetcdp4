@@ -245,4 +245,10 @@ class Ticket
     {
         return $this->booking;
     }
+
+
+    public function getAge()
+    {
+        return $this->getBirthDate()->diff($this->getBooking()->getDateVisit())->y;
+    }
 }

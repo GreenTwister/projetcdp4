@@ -10,4 +10,22 @@ namespace AppBundle\Repository;
  */
 class BookingRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    /**
+     * Retourne le nombre de ticket reservé pour la date $dateTime
+     * @param \DateTime $dateTime
+     * @return int
+     */
+    public function countNbTicketPerDate(\DateTime $dateTime)
+    {
+
+        // TODO implemeemente methode
+        $qb = $this->createQueryBuilder('b');
+        $qb
+            ->select('COUNT(*)')
+            ->where('b.dateVisit = :date')
+            ->setParameter('date', $dateTime);
+
+        return 0;
+    }
 }

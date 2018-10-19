@@ -40,16 +40,10 @@ class LouvreController extends Controller
      */
     public function ticketsAction(Request $request, SessionInterface $session)
     {
+        /** @var Booking $booking */
         $booking = $session->get('booking');
 
         if ($booking == null){
-            return $this->redirectToRoute('home');
-        }
-
-        // Vérifie si la date n'est pas mardi ou dimanche
-        $manager = $this->get('check.manager');
-        $bookingValid = $manager->checkBookingValid($booking);
-        if (!$bookingValid) {
             return $this->redirectToRoute('home');
         }
 
@@ -77,17 +71,27 @@ class LouvreController extends Controller
     /**
      * @Route("/recap", name="recap")
      */
-    public function recapAction(SessionInterface $session)
+    public function recapAction(SessionInterface $session, CheckManager $checkoutManager, Request $request)
     {
         $booking = $session->get('booking');
 
         // Calcule le prix de chaque billet en fonction de l'age
-        $checkoutManager = $this->get('check.manager');
+
         $checkoutManager->setPricesTicketsInBooking($booking);
 
         // Calcule le prix total de la commande
         $cumulPrice = $checkoutManager->getTotalPriceForBooking($booking);
         $booking->setTotal($cumulPrice);
+
+        \Stripe\Stripe::setApiKey("pk_test_tcmU2OGOM5PZfQhQK5yaZvX4");
+
+        \Stripe\Charge::create(array(
+            "amount" => $cumulPrice * 100,
+            "currency" => "eur",
+            "source" => "tok_mastercard", // obtained with Stripe.js
+            "description" => "Paiement de test"
+        ));
+
 
         return $this->render('Louvre/recap.html.twig', array(
             'booking' => $booking,

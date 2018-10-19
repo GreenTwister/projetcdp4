@@ -9,6 +9,7 @@
     <div class="well">
 
         {{ form_start(formBook) }}
+        {{ form_errors(formBook) }}
         {{ form_row(formBook.dateVisit, {label: "Chosissez la date de votre visite"}) }}
         {{ form_row(formBook.typeTicket, {label: "Chosissez le type de(s) billet(s) (à partir de 14h le billet ne peut être que Demi-journée) "}) }}
         {{ form_row(formBook.nbrTicket, {label: "Chosissez le nombre de billet(s) "}) }}
