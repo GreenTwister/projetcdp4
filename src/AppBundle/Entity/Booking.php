@@ -71,7 +71,7 @@ class Booking
     private $total;
 
     /**
-     * @ORM\OneToMany(targetEntity="Ticket", mappedBy="booking")
+     * @ORM\OneToMany(targetEntity="Ticket", mappedBy="booking", cascade={"persist"})
      */
     private $tickets;
 

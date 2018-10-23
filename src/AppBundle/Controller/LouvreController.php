@@ -71,31 +71,59 @@ class LouvreController extends Controller
     /**
      * @Route("/recap", name="recap")
      */
-    public function recapAction(SessionInterface $session, CheckManager $checkoutManager, Request $request)
+    public function recapAction(SessionInterface $session, CheckManager $checkoutManager, Request $request,\Swift_Mailer $mailer)
     {
         $booking = $session->get('booking');
 
         // Calcule le prix de chaque billet en fonction de l'age
-
         $checkoutManager->setPricesTicketsInBooking($booking);
 
         // Calcule le prix total de la commande
         $cumulPrice = $checkoutManager->getTotalPriceForBooking($booking);
         $booking->setTotal($cumulPrice);
 
-        \Stripe\Stripe::setApiKey("pk_test_tcmU2OGOM5PZfQhQK5yaZvX4");
+        if ($request->isMethod('POST')){
 
-        \Stripe\Charge::create(array(
-            "amount" => $cumulPrice * 100,
-            "currency" => "eur",
-            "source" => "tok_mastercard", // obtained with Stripe.js
-            "description" => "Paiement de test"
-        ));
+            // Génère un code unique
+            $booking->setNumBooking(strtoupper(uniqid()));
 
+            // Débite la carte du client
+            $token = $request->request->get('stripeToken');
+           \Stripe\Stripe::setApiKey("sk_test_nX9TGnKYTMCx2ot3A2H2ioeJ");
+
+           \Stripe\Charge::create(array(
+               "amount" => $cumulPrice * 100,
+               "currency" => "eur",
+               "source" => $token,
+               "description" => "Paiement de test"
+            ));
+
+            // Enregistrement en bdd
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($booking);
+            $em->flush();
+
+            // Envoi du mail ?!
+            $booking = $session->get('booking');
+            $message = (new \Swift_Message('Hello Email'))
+                ->setFrom('contactlouvre84@gmail.com')
+                ->setTo($booking->getEmail())
+                ->setBody(
+                    $this->renderView(
+                    // app/Resources/views/Email/registration.html.twig
+                        'Email/registration.html.twig',
+                        array('booking' => $booking)
+                    ),
+                    'text/html'
+                );
+            $mailer->send($message);
+            return $this->render('Louvre/final.html.twig');
+        }
 
         return $this->render('Louvre/recap.html.twig', array(
             'booking' => $booking,
             'total' => $cumulPrice
         ));
     }
+
 }

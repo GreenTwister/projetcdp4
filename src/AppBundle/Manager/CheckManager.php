@@ -32,7 +32,10 @@ class CheckManager
         {
             if($ticket->getTarifRed())
             {
-                $price = $this->tarifReduit;
+                $price = $this->getPriceForAge($ticket->getAge());
+                if($price > $this->tarifEnfant){
+                    $price = $this->tarifReduit;
+                }
             } else {
                 $price = $this->getPriceForAge($ticket->getAge());
             }
@@ -67,9 +70,4 @@ class CheckManager
         }
     }
 
-    public function checkBookingValid($booking)
-    {
-
-        return true;
-    }
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    </head>
+
+<body>
+
+    <img src="https://www.digitourist.com/images/logos/98899881.jpg" width="200" height="200" />
+
+    <h3>Merci pour votre réservation</h3>
+
+    <p>Veuillez trouvez ci-dessous l'intégralité des billets commandés pour le : {{ booking.dateVisit|date('d/m/Y') }}</p>
+    <br/>
+
+    <p>Code de réservation : <strong>{{ booking.NumBooking }}</strong></p>
+        <br/><br/>
+
+    {% for ticket in booking.tickets %}
+
+        <table class="table table-striped">
+            <tr>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Type de billet</th>
+                <th>Prix</th>
+            </tr>
+            <tr>
+                <td>{{ ticket.Surname }}</td>
+                <td>{{ ticket.Name }}</td>
+                <td>{{ booking.TypeTicket }}</td>
+                <td>{{ ticket.Price }}</td>
+            </tr>
+        </table>
+        <br/>
+
+    {% endfor %}
+
+    {#Le total de votre commande est de : <strong>{{ total }}€</strong>#}
+    {#<br/><br/>#}
+
+    Nous vous souhaitons une agréable visite au Musée du Louvre
+    <br/><br/>
+
+    L'équipe du Musée du Louvre<br/><br/>
+
+</body>
+</html>

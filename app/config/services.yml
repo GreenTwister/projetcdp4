@@ -37,3 +37,4 @@ services:
             $tarifNormal: "%tarif_normal%"
             $tarifSenior: "%tarif_senior%"
             $tarifReduit: "%tarif_reduit%"
+
