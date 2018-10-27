@@ -40,6 +40,8 @@ class Booking
      * @var int
      *
      * @ORM\Column(name="NbrTicket", type="integer")
+     * @LouvreAssert\MaxNbrTicket()
+     * @LouvreAssert\NoNegative()
      */
     private $nbrTicket;
 
