@@ -6,18 +6,16 @@ use AppBundle\Entity\Booking;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
-class CheckManager
+class PriceCalculator
 {
-    private $session;
     private $tarifGratuit;
     private $tarifEnfant;
     private $tarifNormal;
     private $tarifSenior;
     private $tarifReduit;
 
-    public function __construct(SessionInterface $session, $tarifGratuit, $tarifEnfant, $tarifNormal, $tarifSenior, $tarifReduit)
+    public function __construct($tarifGratuit, $tarifEnfant, $tarifNormal, $tarifSenior, $tarifReduit)
     {
-        $this->session = $session;
         $this->tarifGratuit = $tarifGratuit;
         $this->tarifEnfant = $tarifEnfant;
         $this->tarifNormal = $tarifNormal;
@@ -35,6 +33,8 @@ class CheckManager
                 $price = $this->getPriceForAge($ticket->getAge());
                 if($price > $this->tarifEnfant){
                     $price = $this->tarifReduit;
+                }else{
+                    $ticket->setTarifRed(false);
                 }
             } else {
                 $price = $this->getPriceForAge($ticket->getAge());

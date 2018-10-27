@@ -22,10 +22,13 @@ class BookingRepository extends \Doctrine\ORM\EntityRepository
         // TODO implemeemente methode
         $qb = $this->createQueryBuilder('b');
         $qb
-            ->select('COUNT(*)')
+            ->select('SUM(b.nbrTicket)')
             ->where('b.dateVisit = :date')
             ->setParameter('date', $dateTime);
 
-        return 0;
+
+        $query = $qb->getQuery();
+
+        return $query->getSingleScalarResult();
     }
 }

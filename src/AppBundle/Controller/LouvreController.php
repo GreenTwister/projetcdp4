@@ -7,7 +7,8 @@ use AppBundle\Entity\Ticket;
 use AppBundle\Form\BookingFillTicketsType;
 use AppBundle\Form\BookingType;
 use AppBundle\Form\TicketType;
-use AppBundle\Manager\CheckManager;
+use AppBundle\Manager\BookingManager;
+use AppBundle\Manager\PriceCalculator;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,15 +20,14 @@ class LouvreController extends Controller
     /**
      * @Route("/", name="home")
      */
-    public function indexAction(Request $request, SessionInterface $session)
+    public function indexAction(Request $request, BookingManager $bookingManager)
     {
-        $booking = new Booking();
-        $form = $this->createForm(BookingType::class);
+        $booking = $bookingManager->initializeBooking();
+        $form = $this->createForm(BookingType::class,$booking);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $session->set('booking', $form->getData());
+            $bookingManager->generateTickets($booking);
             return $this->redirectToRoute('tickets');
         }
         return $this->render('Louvre/index.html.twig', array(
@@ -38,21 +38,9 @@ class LouvreController extends Controller
     /**
      * @Route("/tickets", name="tickets")
      */
-    public function ticketsAction(Request $request, SessionInterface $session)
+    public function ticketsAction(Request $request, BookingManager $bookingManager, SessionInterface $session)
     {
-        /** @var Booking $booking */
-        $booking = $session->get('booking');
-
-        if ($booking == null){
-            return $this->redirectToRoute('home');
-        }
-
-        if(!$request->isMethod('POST')){
-
-          for ($i = 0; $i < $booking->getNbrTicket(); $i++){
-               $booking->addTicket(new Ticket());
-           }
-        }
+        $booking = $bookingManager->getCurrentBooking();
 
         $form = $this->createForm(BookingFillTicketsType::class, $booking);
         $form->handleRequest($request);
@@ -71,9 +59,9 @@ class LouvreController extends Controller
     /**
      * @Route("/recap", name="recap")
      */
-    public function recapAction(SessionInterface $session, CheckManager $checkoutManager, Request $request,\Swift_Mailer $mailer)
+    public function recapAction(BookingManager $bookingManager,SessionInterface $session, PriceCalculator $checkoutManager, Request $request, \Swift_Mailer $mailer)
     {
-        $booking = $session->get('booking');
+        $booking = $bookingManager->getCurrentBooking();
 
         // Calcule le prix de chaque billet en fonction de l'age
         $checkoutManager->setPricesTicketsInBooking($booking);
@@ -89,7 +77,7 @@ class LouvreController extends Controller
 
             // Débite la carte du client
             $token = $request->request->get('stripeToken');
-           \Stripe\Stripe::setApiKey("sk_test_nX9TGnKYTMCx2ot3A2H2ioeJ");
+           \Stripe\Stripe::setApiKey($this->getParameter("stripe_secret_key"));
 
            \Stripe\Charge::create(array(
                "amount" => $cumulPrice * 100,
@@ -106,18 +94,23 @@ class LouvreController extends Controller
             // Envoi du mail ?!
             $booking = $session->get('booking');
             $message = (new \Swift_Message('Hello Email'))
-                ->setFrom('contactlouvre84@gmail.com')
-                ->setTo($booking->getEmail())
+                ->setFrom($this->getParameter('mail_service_client'))
+                ->setTo($booking->getEmail());
+            //$cid = $message->embed(....);
+
+            $message
                 ->setBody(
-                    $this->renderView(
-                    // app/Resources/views/Email/registration.html.twig
-                        'Email/registration.html.twig',
-                        array('booking' => $booking)
+                    $this->renderView('Email/registration.html.twig', array(
+                        'booking' => $booking,
+                        // 'cid' => $cid,
+                        'total' => $booking->getTotal())
                     ),
                     'text/html'
                 );
             $mailer->send($message);
-            return $this->render('Louvre/final.html.twig');
+            return $this->render('Louvre/final.html.twig', array(
+                'booking' => $booking
+            ));
         }
 
         return $this->render('Louvre/recap.html.twig', array(

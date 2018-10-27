@@ -1,5 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 {% block body %}
-    Félicitations ! Votre commande à été prise en compte . Vous allez recevoir vos billets par mail très bientôt !
+    Félicitations ! Votre commande à été prise en compte . Vous allez recevoir vos billets par mail à cet adresse : {{ booking.email }} !
+
+    Votre commande à le numéro {{ booking.NumBooking }}
 {% endblock %}

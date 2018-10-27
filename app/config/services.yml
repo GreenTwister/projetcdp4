@@ -30,7 +30,7 @@ services:
         tags: ['controller.service_arguments']
 
     # add more services, or override services that need manual wiring
-    AppBundle\Manager\CheckManager:
+    AppBundle\Manager\PriceCalculator:
         arguments:
             $tarifGratuit: "%tarif_gratuit%"
             $tarifEnfant: "%tarif_enfant%"

@@ -34,7 +34,9 @@ class NotFullCapacityValidator extends ConstraintValidator
             return;
         }
 
-        $this->bookingRepository->countNbTicketPerDate();
+        $nbTicketsReserved = $this->bookingRepository->countNbTicketPerDate($object->getDateVisit());
+
+
 
 //        $today = new \DateTime();
 //        // Si billet journée alors qu'il est plus de 14h

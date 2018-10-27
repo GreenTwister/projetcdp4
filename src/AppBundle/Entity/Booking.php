@@ -12,6 +12,7 @@ use AppBundle\Validator\Constraints as LouvreAssert;
  * @ORM\Table(name="booking")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BookingRepository")
  * @LouvreAssert\ValidHalfDay()
+ * @LouvreAssert\NotFullCapacity()
  */
 class Booking
 {

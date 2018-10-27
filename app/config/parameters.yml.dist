@@ -18,3 +18,16 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
 
+    mail_service_client: "customer@louvre.fr"
+
+
+    # Stripe key
+    stripe_secret_key: XXXXX
+    stripe_public_key: XXXXX
+
+    # Tarifs
+    tarif_gratuit: 0
+    tarif_enfant: 8
+    tarif_normal: 16
+    tarif_senior: 12
+    tarif_reduit: 10
