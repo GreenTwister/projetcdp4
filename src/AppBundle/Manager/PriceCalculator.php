@@ -3,11 +3,11 @@
 namespace AppBundle\Manager;
 
 use AppBundle\Entity\Booking;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 class PriceCalculator
 {
+    const DemiCoef = 0.5;
     private $tarifGratuit;
     private $tarifEnfant;
     private $tarifNormal;
@@ -26,8 +26,10 @@ class PriceCalculator
     public function setPricesTicketsInBooking(Booking $booking)
     {
         $cumulPrice = 0;
+
         foreach($booking->getTickets() as $ticket)
         {
+
             if($ticket->getTarifRed())
             {
                 $price = $this->getPriceForAge($ticket->getAge());
@@ -40,6 +42,9 @@ class PriceCalculator
                 $price = $this->getPriceForAge($ticket->getAge());
             }
 
+            if ($booking->getTypeTicket() == 'Demi-journée'){
+                $price = $price * PriceCalculator::DemiCoef;
+            }
             $cumulPrice += $price;
             $ticket->setPrice($price);
         }
