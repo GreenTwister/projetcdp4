@@ -38,3 +38,8 @@ services:
             $tarifSenior: "%tarif_senior%"
             $tarifReduit: "%tarif_reduit%"
 
+    AppBundle\Manager\BookingManager:
+        arguments:
+            $secretKey: "%stripe_secret_key%"
+
+

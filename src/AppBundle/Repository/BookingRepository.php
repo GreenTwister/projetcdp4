@@ -30,5 +30,7 @@ class BookingRepository extends \Doctrine\ORM\EntityRepository
         $query = $qb->getQuery();
 
         return $query->getSingleScalarResult();
+
+
     }
 }

@@ -1,7 +1,11 @@
 {% extends 'layout.html.twig' %}
 
 {% block body %}
-    Félicitations ! Votre commande à été prise en compte . Vous allez recevoir vos billets par mail à cet adresse : {{ booking.email }} !
+    Félicitations ! Votre commande à bien été prise en compte.
 
-    Votre commande à le numéro {{ booking.NumBooking }}
+    <p>Votre commande à le numéro {{ booking.NumBooking }}</p>
+
+    <p>Vos billets ont été envoyés à votre adresse : {{ booking.email }} ! </p>
+
+    <p> Si vos billets ne vous ont pas été envoyés contacté nous à l'adresse suivante customer@louvre.fr  </p>
 {% endblock %}

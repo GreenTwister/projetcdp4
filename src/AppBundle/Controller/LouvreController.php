@@ -59,32 +59,22 @@ class LouvreController extends Controller
     /**
      * @Route("/recap", name="recap")
      */
-    public function recapAction(BookingManager $bookingManager,SessionInterface $session, PriceCalculator $checkoutManager, Request $request, \Swift_Mailer $mailer)
+    public function recapAction(BookingManager $bookingManager,SessionInterface $session, PriceCalculator $priceCalculator, Request $request, \Swift_Mailer $mailer)
     {
         $booking = $bookingManager->getCurrentBooking();
 
         // Calcule le prix de chaque billet en fonction de l'age
-        $checkoutManager->setPricesTicketsInBooking($booking);
+        $priceCalculator->setPricesTicketsInBooking($booking);
 
         // Calcule le prix total de la commande
-        $cumulPrice = $checkoutManager->getTotalPriceForBooking($booking);
+        $cumulPrice = $priceCalculator->getTotalPriceForBooking($booking);
         $booking->setTotal($cumulPrice);
 
         if ($request->isMethod('POST')){
 
-            // Génère un code unique
             $booking->setNumBooking(strtoupper(uniqid()));
-
-            // Débite la carte du client
             $token = $request->request->get('stripeToken');
-           \Stripe\Stripe::setApiKey($this->getParameter("stripe_secret_key"));
-
-           \Stripe\Charge::create(array(
-               "amount" => $cumulPrice * 100,
-               "currency" => "eur",
-               "source" => $token,
-               "description" => "Paiement de test"
-            ));
+            $bookingManager->Payment($token, $cumulPrice);
 
             // Enregistrement en bdd
             $em = $this->getDoctrine()->getManager();

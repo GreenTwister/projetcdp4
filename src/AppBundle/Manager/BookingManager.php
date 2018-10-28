@@ -21,10 +21,12 @@ class BookingManager
      * @var SessionInterface
      */
     private $session;
+    private $secretKey;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(SessionInterface $session, $secretKey)
     {
         $this->session = $session;
+        $this->secretKey = $secretKey;
     }
 
 
@@ -54,4 +56,18 @@ class BookingManager
 
         return $booking;
     }
+
+    public function Payment($token, $total)
+    {
+        \Stripe\Stripe::setApiKey($this->secretKey);
+
+        \Stripe\Charge::create(array(
+            "amount" => $total * 100,
+            "currency" => "eur",
+            "source" => $token,
+            "description" => "Paiement de test"
+        ));
+
+    }
+
 }
