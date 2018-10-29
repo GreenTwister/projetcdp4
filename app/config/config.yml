@@ -37,6 +37,7 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         stripe_public_key: '%stripe_public_key%'
+        mail_service_client: '%mail_service_client%'
     form_themes:
     - 'bootstrap_4_layout.html.twig'
 

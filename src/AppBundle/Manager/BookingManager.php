@@ -11,6 +11,7 @@ namespace AppBundle\Manager;
 
 use AppBundle\Entity\Booking;
 use AppBundle\Entity\Ticket;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -22,11 +23,13 @@ class BookingManager
      */
     private $session;
     private $secretKey;
+    private $em;
 
-    public function __construct(SessionInterface $session, $secretKey)
+    public function __construct(SessionInterface $session, $secretKey, EntityManagerInterface $em)
     {
         $this->session = $session;
         $this->secretKey = $secretKey;
+        $this->em = $em;
     }
 
 
@@ -68,6 +71,12 @@ class BookingManager
             "description" => "Paiement de test"
         ));
 
+    }
+
+    public function flushBooking($booking)
+    {
+        $this->em->persist($booking);
+        $this->em->flush($booking);
     }
 
 }

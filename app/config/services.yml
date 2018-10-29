@@ -41,5 +41,3 @@ services:
     AppBundle\Manager\BookingManager:
         arguments:
             $secretKey: "%stripe_secret_key%"
-
-

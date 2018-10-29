@@ -75,20 +75,12 @@ class LouvreController extends Controller
             $booking->setNumBooking(strtoupper(uniqid()));
             $token = $request->request->get('stripeToken');
             $bookingManager->Payment($token, $cumulPrice);
+            $bookingManager->flushBooking($booking);
 
-            // Enregistrement en bdd
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($booking);
-            $em->flush();
-
-            // Envoi du mail ?!
-            $booking = $session->get('booking');
+            // Envoi du mail ?
             $message = (new \Swift_Message('Hello Email'))
                 ->setFrom($this->getParameter('mail_service_client'))
-                ->setTo($booking->getEmail());
-            //$cid = $message->embed(....);
-
-            $message
+                ->setTo($booking->getEmail())
                 ->setBody(
                     $this->renderView('Email/registration.html.twig', array(
                         'booking' => $booking,
