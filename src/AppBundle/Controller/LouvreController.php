@@ -2,18 +2,17 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Booking;
-use AppBundle\Entity\Ticket;
 use AppBundle\Form\BookingFillTicketsType;
 use AppBundle\Form\BookingType;
-use AppBundle\Form\TicketType;
+
 use AppBundle\Manager\BookingManager;
 use AppBundle\Manager\PriceCalculator;
+use AppBundle\Manager\MailManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Validator\Constraints\DateTime;
+
 
 class LouvreController extends Controller
 {
@@ -59,7 +58,7 @@ class LouvreController extends Controller
     /**
      * @Route("/recap", name="recap")
      */
-    public function recapAction(BookingManager $bookingManager,SessionInterface $session, PriceCalculator $priceCalculator, Request $request, \Swift_Mailer $mailer)
+    public function recapAction(BookingManager $bookingManager, PriceCalculator $priceCalculator, Request $request, MailManager $mailManager, \Swift_Mailer $mailer)
     {
         $booking = $bookingManager->getCurrentBooking();
 
@@ -77,14 +76,11 @@ class LouvreController extends Controller
             $bookingManager->Payment($token, $cumulPrice);
             $bookingManager->flushBooking($booking);
 
-            // Envoi du mail ?
-            $message = (new \Swift_Message('Hello Email'))
-                ->setFrom($this->getParameter('mail_service_client'))
-                ->setTo($booking->getEmail())
-                ->setBody(
+            // Envoi du mail
+            $message = $mailManager->prepareMail($booking);
+            $message->setBody(
                     $this->renderView('Email/registration.html.twig', array(
                         'booking' => $booking,
-                        // 'cid' => $cid,
                         'total' => $booking->getTotal())
                     ),
                     'text/html'

@@ -1,0 +1,77 @@
+PHPUnit 5.7.27 by Sebastian Bergmann and contributors.
+
+.                                                                   1 / 1 (100%)<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+
+    <title>Billetterie Louvre</title>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <a href="/">
+        <img src="/image/logo1.jpg" width="200" height="200"/>
+        </a>
+        <p>Acheter votre billet sans passer par la file d'attente</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div id="menu" class="col-md-3">
+            <h3> Infos pratiques</h3>
+            <ul class="list-group">
+                <li class="list-group-item">Les billets <strong>demi-journée</strong> sont disponibles qu'à partir de <strong>14h</strong></li>
+                <li class="list-group-item">Le musée est ouvert <strong>tous les jours</strong> de <strong>10h à 19h</strong></li>
+                <li class="list-group-item">Le musée sera <strong>fermé le 1 Mai, 25 Décembre et 1er Novembre</strong> </li>
+            </ul>
+            <h3>Les Tarifs </h3>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Tarif Normal</strong> de 16 € ( à partir de 12 ans )</li>
+                <li class="list-group-item"><strong>Tarif Enfant</strong> de 8 € ( à partir de 8 ans et jusqu'à 12 ans)
+                </li>
+                <li class="list-group-item"><strong>Tarif Sénior</strong> de 12 € ( à partir de 60 ans)</li>
+                <li class="list-group-item"><strong>Tarif Réduit</strong> de 10 € accordé dans certaines conditions
+                    (étudiant, employé du musée, d’un service du Ministère de la Culture, militaire…)
+                </li>
+            </ul>
+        </div>
+        <div id="content" class="col-md-9">
+                    <div class="well">
+
+        <form name="sabate_louvrebundle_booking" method="post">
+        
+        <div class="form-group"><label for="sabate_louvrebundle_booking_dateVisit" class="required">Chosissez la date de votre visite</label><input type="date" id="sabate_louvrebundle_booking_dateVisit" name="sabate_louvrebundle_booking[dateVisit]" required="required" class="form-control" value="2018-10-31" /></div>
+        <div class="form-group"><label class="required" for="sabate_louvrebundle_booking_typeTicket">Chosissez le type de(s) billet(s) (à partir de 14h le billet ne peut être que Demi-journée) </label><select id="sabate_louvrebundle_booking_typeTicket" name="sabate_louvrebundle_booking[typeTicket]" class="form-control"><option value="Journée">Journée</option><option value="Demi-journée">Demi-journée</option></select></div>
+        <div class="form-group"><label for="sabate_louvrebundle_booking_nbrTicket" class="required">Chosissez le nombre de billet(s) </label><input type="number" id="sabate_louvrebundle_booking_nbrTicket" name="sabate_louvrebundle_booking[nbrTicket]" required="required" class="form-control" /></div>
+        <div class="form-group"><label for="sabate_louvrebundle_booking_email" class="required">Votre adresse mail</label><input type="text" id="sabate_louvrebundle_booking_email" name="sabate_louvrebundle_booking[email]" required="required" maxlength="255" class="form-control" /></div>
+
+        <input type="submit" value="Suivant" class="btn btn-success pull-right"/>
+
+        <input type="hidden" id="sabate_louvrebundle_booking__token" name="sabate_louvrebundle_booking[_token]" value="1Zu_L3FvG-hJlcR_ZLnEeqYs-hc_JHdBaVhdMYPhcyg" /></form>
+    </div>
+
+                        
+        </div>
+    </div>
+</div>
+<hr>
+<footer>
+    <p>The sky's the limit © 2018 and beyond.</p>
+</footer>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="/jquery/jquery3.3.min.js"></script>
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+Time: 17.86 seconds, Memory: 22.00MB
+
+OK (1 test, 0 assertions)
