@@ -78,13 +78,6 @@ class LouvreController extends Controller
 
             // Envoi du mail
             $message = $mailManager->prepareMail($booking);
-            $message->setBody(
-                    $this->renderView('Email/registration.html.twig', array(
-                        'booking' => $booking,
-                        'total' => $booking->getTotal())
-                    ),
-                    'text/html'
-                );
             $mailer->send($message);
             return $this->render('Louvre/final.html.twig', array(
                 'booking' => $booking

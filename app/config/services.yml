@@ -46,3 +46,4 @@ services:
         arguments:
             - "@mailer"
             - "%mail_service_client%"
+            - "@service_container"
