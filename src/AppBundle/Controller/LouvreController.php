@@ -4,25 +4,24 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\BookingFillTicketsType;
 use AppBundle\Form\BookingType;
-
 use AppBundle\Manager\BookingManager;
-use AppBundle\Manager\PriceCalculator;
-use AppBundle\Manager\MailManager;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 
 class LouvreController extends Controller
 {
     /**
      * @Route("/", name="home")
+     * @param Request $request
+     * @param BookingManager $bookingManager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request, BookingManager $bookingManager)
     {
         $booking = $bookingManager->initializeBooking();
-        $form = $this->createForm(BookingType::class,$booking);
+        $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -36,8 +35,11 @@ class LouvreController extends Controller
 
     /**
      * @Route("/tickets", name="tickets")
+     * @param Request $request
+     * @param BookingManager $bookingManager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function ticketsAction(Request $request, BookingManager $bookingManager, SessionInterface $session)
+    public function ticketsAction(Request $request, BookingManager $bookingManager)
     {
         $booking = $bookingManager->getCurrentBooking();
 
@@ -45,8 +47,7 @@ class LouvreController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $session->set('booking', $booking);
+            $bookingManager->computePrice($booking);
             return $this->redirectToRoute('recap');
         }
         return $this->render('Louvre/tickets.html.twig', array(
@@ -57,36 +58,27 @@ class LouvreController extends Controller
 
     /**
      * @Route("/recap", name="recap")
+     * @param BookingManager $bookingManager
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function recapAction(BookingManager $bookingManager, PriceCalculator $priceCalculator, Request $request, MailManager $mailManager, \Swift_Mailer $mailer)
+    public function recapAction(BookingManager $bookingManager,Request $request)
     {
         $booking = $bookingManager->getCurrentBooking();
 
-        // Calcule le prix de chaque billet en fonction de l'age
-        $priceCalculator->setPricesTicketsInBooking($booking);
 
-        // Calcule le prix total de la commande
-        $cumulPrice = $priceCalculator->getTotalPriceForBooking($booking);
-        $booking->setTotal($cumulPrice);
 
-        if ($request->isMethod('POST')){
 
-            $booking->setNumBooking(strtoupper(uniqid()));
-            $token = $request->request->get('stripeToken');
-            $bookingManager->Payment($token, $cumulPrice);
-            $bookingManager->flushBooking($booking);
-
-            // Envoi du mail
-            $message = $mailManager->prepareMail($booking);
-            $mailer->send($message);
-            return $this->render('Louvre/final.html.twig', array(
-                'booking' => $booking
-            ));
+        if ($request->isMethod('POST')) {
+            if ($bookingManager->payment($booking)) {
+                return $this->render('Louvre/final.html.twig', array(
+                    'booking' => $booking
+                ));
+            }
         }
 
         return $this->render('Louvre/recap.html.twig', array(
-            'booking' => $booking,
-            'total' => $cumulPrice
+            'booking' => $booking
         ));
     }
 

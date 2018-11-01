@@ -9,17 +9,22 @@
 namespace AppBundle\Manager;
 
 
+use Twig\Environment;
+
 class MailManager
 {
     private $mailer;
     private $serviceClient;
-    private $container;
+    /**
+     * @var Environment
+     */
+    private $twig;
 
-    public function __construct($mailer, $serviceClient, $container)
+    public function __construct(\Swift_Mailer $mailer, $serviceClient, Environment $twig)
     {
         $this->mailer = $mailer;
         $this->serviceClient = $serviceClient;
-        $this->container = $container;
+        $this->twig = $twig;
     }
 
     public function prepareMail($booking)
@@ -27,13 +32,13 @@ class MailManager
         $message = (new \Swift_Message('Billets du Musée du Louvre'))
             ->setFrom($this->serviceClient)
             ->setTo($booking->getEmail())
-            ->setBody($this->container->get('templating')->render('Email/registration.html.twig', array(
+            ->setBody($this->twig->render('Email/registration.html.twig', array(
                 'booking' => $booking,
                 'total' => $booking->getTotal())
-        ),
+            ),
         'text/html'
-    );;
+        );
 
-        return $message;
+        return $this->mailer->send($message);
     }
 }

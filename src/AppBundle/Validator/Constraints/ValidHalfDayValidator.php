@@ -20,13 +20,16 @@ class ValidHalfDayValidator extends ConstraintValidator
         if (!$object instanceof Booking) {
             return;
         }
+        if (!$constraint instanceof ValidHalfDay) {
+            return;
+        }
 
         $today = new \DateTime();
         // Si billet journée alors qu'il est plus de 14h
         $hour = $today->format('H');
         $today = $today->format('d/m/y');
         $dateBooking = $object->getDateVisit()->format('d/m/y');
-        if ($today == $dateBooking && $object->getTypeTicket() == 'Journée' && (int)$hour >= 14) {
+        if ($today == $dateBooking && $object->getTypeTicket() == 'Journée' && (int)$hour >= $constraint::LIMIT_HOUR) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('typeTicket')
                 ->addViolation();

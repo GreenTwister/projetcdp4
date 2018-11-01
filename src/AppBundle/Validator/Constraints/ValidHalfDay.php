@@ -9,6 +9,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidHalfDay extends Constraint
 {
+
+    const LIMIT_HOUR = 14;
+
     public $message = 'Passé 14h vous ne pouvez pas sélectionner journée entière pour aujourd\'hui';
 
     public function getTargets()

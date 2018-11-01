@@ -11,6 +11,7 @@ namespace AppBundle\Manager;
 
 use AppBundle\Entity\Booking;
 use AppBundle\Entity\Ticket;
+use AppBundle\Service\PaymentInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -22,14 +23,33 @@ class BookingManager
      * @var SessionInterface
      */
     private $session;
-    private $secretKey;
     private $em;
+    /**
+     * @var PaymentInterface
+     */
+    private $payment;
+    /**
+     * @var MailManager
+     */
+    private $mailManager;
+    /**
+     * @var PriceCalculator
+     */
+    private $priceCalculator;
 
-    public function __construct(SessionInterface $session, $secretKey, EntityManagerInterface $em)
+    public function __construct(
+        SessionInterface $session,
+        EntityManagerInterface $em,
+        PaymentInterface $payment,
+        PriceCalculator $priceCalculator,
+        MailManager $mailManager
+    )
     {
         $this->session = $session;
-        $this->secretKey = $secretKey;
         $this->em = $em;
+        $this->payment = $payment;
+        $this->mailManager = $mailManager;
+        $this->priceCalculator = $priceCalculator;
     }
 
 
@@ -42,7 +62,7 @@ class BookingManager
 
     public function generateTickets(Booking $booking)
     {
-        for ($i = 0; $i < $booking->getNbrTicket(); $i++){
+        for ($i = 0; $i < $booking->getNbrTicket(); $i++) {
             $booking->addTicket(new Ticket());
         }
 
@@ -53,30 +73,40 @@ class BookingManager
     {
         $booking = $this->session->get(self::SESSION_BOOKING_KEY);
 
-        if(!$booking instanceof Booking){
+        if (!$booking instanceof Booking) {
             throw new NotFoundHttpException("Pas de commande en cours");
         }
 
         return $booking;
     }
 
-    public function Payment($token, $total)
+    public function payment(Booking $booking)
     {
-        \Stripe\Stripe::setApiKey($this->secretKey);
+        if ($this->payment->doPayment($booking->getTotal(), "Réservation pour telle date")) {
+            $booking->setNumBooking(strtoupper(uniqid()));
+            $this->mailManager->prepareMail($booking);
+            $this->flushBooking($booking);
+            return true;
+        }
 
-        \Stripe\Charge::create(array(
-            "amount" => $total * 100,
-            "currency" => "eur",
-            "source" => $token,
-            "description" => "Paiement de test"
-        ));
 
+        return false;
     }
 
     public function flushBooking($booking)
     {
         $this->em->persist($booking);
         $this->em->flush($booking);
+    }
+
+    public function computePrice($booking)
+    {
+        // Calcule le prix de chaque billet en fonction de l'age
+        $this->priceCalculator->setPricesTicketsInBooking($booking);
+
+        // Calcule le prix total de la commande
+        $cumulPrice = $this->priceCalculator->getTotalPriceForBooking($booking);
+        $booking->setTotal($cumulPrice);
     }
 
 }

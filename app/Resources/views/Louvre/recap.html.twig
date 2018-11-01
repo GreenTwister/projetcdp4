@@ -25,14 +25,14 @@
         {% endfor %}
     </table>
 
-    <p>Le prix total est de {{ total }} €</p>
+    <p>Le prix total est de {{ booking.total }} €</p>
 
     <form method="post" id="payment-form">
         <script
                 src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                 data-key="{{ stripe_public_key }}"
                 data-email="{{ booking.email }}"
-                data-amount="{{ total * 100 }}"
+                data-amount="{{ booking.total * 100 }}"
                 data-name="Musée du Louvre"
                 data-image="{{ asset('image/logo1.jpg') }}"
                 data-locale="auto">

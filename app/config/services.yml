@@ -38,12 +38,10 @@ services:
             $tarifSenior: "%tarif_senior%"
             $tarifReduit: "%tarif_reduit%"
 
-    AppBundle\Manager\BookingManager:
+    AppBundle\Service\StripeService:
         arguments:
-            $secretKey: "%stripe_secret_key%"
+            $stripeSecretKey: "%stripe_secret_key%"
 
     AppBundle\Manager\MailManager:
         arguments:
-            - "@mailer"
-            - "%mail_service_client%"
-            - "@service_container"
+            $serviceClient: "%mail_service_client%"
