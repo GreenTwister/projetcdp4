@@ -35,18 +35,10 @@ class NotFullCapacityValidator extends ConstraintValidator
         }
 
         $nbTicketsReserved = $this->bookingRepository->countNbTicketPerDate($object->getDateVisit());
+        $full = $nbTicketsReserved + $object->getNbrTicket();
+        if ( $nbTicketsReserved >= 1000 || $full >= 1000){
+            return false;
+        }
 
-
-
-//        $today = new \DateTime();
-//        // Si billet journée alors qu'il est plus de 14h
-//        $hour = $today->format('H');
-//        $today = $today->format('d/m/y');
-//        $dateBooking = $object->getDateVisit()->format('d/m/y');
-//        if ($today == $dateBooking && $object->getTypeTicket() == 'Journée' && (int)$hour >= 11) {
-//            $this->context->buildViolation($constraint->message)
-//                ->atPath('typeTicket')
-//                ->addViolation();
-//        }
     }
 }
