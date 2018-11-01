@@ -37,7 +37,9 @@ class NotFullCapacityValidator extends ConstraintValidator
         $nbTicketsReserved = $this->bookingRepository->countNbTicketPerDate($object->getDateVisit());
         $full = $nbTicketsReserved + $object->getNbrTicket();
         if ( $nbTicketsReserved >= 1000 || $full >= 1000){
-            return false;
+
+            $this->context->buildViolation($constraint->message)
+                ->addViolation();
         }
 
     }
