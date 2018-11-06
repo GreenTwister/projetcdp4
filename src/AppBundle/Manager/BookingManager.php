@@ -72,7 +72,6 @@ class BookingManager
     public function getCurrentBooking()
     {
         $booking = $this->session->get(self::SESSION_BOOKING_KEY);
-
         if (!$booking instanceof Booking) {
             throw new NotFoundHttpException("Pas de commande en cours");
         }

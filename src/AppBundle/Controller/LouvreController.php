@@ -20,6 +20,7 @@ class LouvreController extends Controller
      */
     public function indexAction(Request $request, BookingManager $bookingManager)
     {
+
         $booking = $bookingManager->initializeBooking();
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
@@ -65,18 +66,16 @@ class LouvreController extends Controller
     public function recapAction(BookingManager $bookingManager,Request $request)
     {
         $booking = $bookingManager->getCurrentBooking();
-
-
-
-
         if ($request->isMethod('POST')) {
             if ($bookingManager->payment($booking)) {
                 return $this->render('Louvre/final.html.twig', array(
                     'booking' => $booking
                 ));
+            }else{
+// TODO quoi faire si y'a un pb ???
+
             }
         }
-
         return $this->render('Louvre/recap.html.twig', array(
             'booking' => $booking
         ));

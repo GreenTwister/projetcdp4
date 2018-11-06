@@ -20,6 +20,8 @@ class ClosedDayValidator extends ConstraintValidator
             return;
         }
 
+
+        // TODO close day doit retourner tous les jours feries
         $closedDays = ['01-05', '01-11', '25-12'];
         $day = $value->format('d-m');
         if (in_array($day , $closedDays)){

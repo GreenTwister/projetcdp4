@@ -19,7 +19,6 @@ class BookingRepository extends \Doctrine\ORM\EntityRepository
     public function countNbTicketPerDate(\DateTime $dateTime)
     {
 
-        // TODO implemeemente methode
         $qb = $this->createQueryBuilder('b');
         $qb
             ->select('SUM(b.nbrTicket)')

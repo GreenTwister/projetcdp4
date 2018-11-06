@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as LouvreAssert;
@@ -41,8 +42,6 @@ class Booking
      *
      * @ORM\Column(name="NbrTicket", type="integer")
      * @Assert\Range(min=1,max=6)
-     * @LouvreAssert\MaxNbrTicket()
-     * @LouvreAssert\NoNegative()
      */
     private $nbrTicket;
 
@@ -76,12 +75,14 @@ class Booking
 
     /**
      * @ORM\OneToMany(targetEntity="Ticket", mappedBy="booking", cascade={"persist"})
+     * @Assert\Valid()
      */
     private $tickets;
 
     public function __construct()
     {
         $this->dateVisit         = new \Datetime();
+        $this->tickets = new ArrayCollection();
     }
     /**
      * Get id
@@ -246,7 +247,7 @@ class Booking
      */
     public function addTicket(\AppBundle\Entity\Ticket $ticket)
     {
-        $this->tickets[] = $ticket;
+        $this->tickets->add($ticket);
         $ticket->setBooking($this);
         return $this;
 
