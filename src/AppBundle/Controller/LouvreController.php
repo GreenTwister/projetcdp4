@@ -20,7 +20,6 @@ class LouvreController extends Controller
      */
     public function indexAction(Request $request, BookingManager $bookingManager)
     {
-
         $booking = $bookingManager->initializeBooking();
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
