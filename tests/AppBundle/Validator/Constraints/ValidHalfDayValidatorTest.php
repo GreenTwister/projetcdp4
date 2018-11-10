@@ -15,11 +15,6 @@ use Tests\ValidatorTestAbstract;
 
 class ValidHalfDayValidatorTest extends ValidatorTestAbstract
 {
-    protected function getValidatorInstance()
-    {
-        return new ValidHalfDayValidator();
-    }
-
     /**
      * @dataProvider  hourOk
      */
@@ -28,14 +23,32 @@ class ValidHalfDayValidatorTest extends ValidatorTestAbstract
         $validHalfConstraint = new ValidHalfDay();
         $validHalfValidator = $this->initValidator();
 
-        $validHalfValidator->validate(\DateTime::createFromFormat('H',$hour), $validHalfConstraint);
+        $validHalfValidator->validate(\DateTime::createFromFormat('H', $hour), $validHalfConstraint);
 
     }
 
     public function hourOk()
     {
         return [
-            [14]
+            ['0'],
+            ['1'],
+            ['2'],
+            ['3'],
+            ['4'],
+            ['5'],
+            ['6'],
+            ['7'],
+            ['8'],
+            ['9'],
+            ['10'],
+            ['11'],
+            ['12'],
+            ['13'],
         ];
+    }
+
+    protected function getValidatorInstance()
+    {
+        return new ValidHalfDayValidator();
     }
 }

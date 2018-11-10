@@ -45,13 +45,22 @@ class NotTuesdayValidatorTest extends ValidatorTestAbstract
         ];
     }
 
-    public function testValidationKo()
+    /**
+     * @dataProvider  dayKo
+     */
+    public function testValidationKo($day)
     {
         $notTuesdayConstraint = new NotTuesday();
 
         $notTuesdayValidator = $this->initValidator($notTuesdayConstraint->message);
-        $notTuesdayValidator->validate(\DateTime::createFromFormat('D', 'Tue'), $notTuesdayConstraint);
+        $notTuesdayValidator->validate(\DateTime::createFromFormat('D', $day), $notTuesdayConstraint);
 
     }
 
+    public function dayKo()
+    {
+        return [
+            ['Tue']
+        ];
+    }
 }

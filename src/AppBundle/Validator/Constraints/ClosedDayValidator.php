@@ -19,7 +19,7 @@ class ClosedDayValidator extends ConstraintValidator
         if (!$value instanceof \DateTime) {
             return;
         }
-        $paque = date("d-m", easter_date());
+        $paque = date ('d-m', easter_date($value->format('Y')));
         // TODO close day doit retourner tous les jours feries
         $closedDays = ['01-01', '01-05','08-05','14-07','15-08', '01-11','11-05', '25-12', $paque];
         $day = $value->format('d-m');

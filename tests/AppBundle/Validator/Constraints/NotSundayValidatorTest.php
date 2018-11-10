@@ -22,8 +22,8 @@ class NotSundayValidatorTest extends ValidatorTestAbstract
 
 
     /**
-     * @dataProvider  dayOk
-     */
+ * @dataProvider  dayOk
+ */
     public function testValidationOk($day)
     {
         $notSundayConstraint = new NotSunday();
@@ -45,12 +45,22 @@ class NotSundayValidatorTest extends ValidatorTestAbstract
         ];
     }
 
-    public function testValidationKo()
+    /**
+     * @dataProvider  dayKo
+     */
+    public function testValidationKo($day)
     {
         $notSundayConstraint = new NotSunday();
 
         $notSundayValidator = $this->initValidator($notSundayConstraint->message);
-        $notSundayValidator->validate(\DateTime::createFromFormat('D', 'Sun'), $notSundayConstraint);
+        $notSundayValidator->validate(\DateTime::createFromFormat('D', $day), $notSundayConstraint);
 
+    }
+
+    public function dayKo()
+    {
+        return [
+            ['Sun'],
+        ];
     }
 }

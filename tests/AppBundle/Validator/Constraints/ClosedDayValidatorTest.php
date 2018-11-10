@@ -21,7 +21,6 @@ class ClosedDayValidatorTest extends ValidatorTestAbstract
     {
         $closeDayConstraint = new ClosedDay();
         $closeDayValidator = $this->initValidator($closeDayConstraint->message);
-
         $closeDayValidator->validate(new \DateTime($date), $closeDayConstraint);
 
     }
@@ -32,6 +31,7 @@ class ClosedDayValidatorTest extends ValidatorTestAbstract
             ['2018-05-01'],
             ['2018-12-25'],
             ['2018-11-01'],
+            ['2018-05-08'],
         ];
     }
 
