@@ -1,6 +1,11 @@
 {% extends 'layout.html.twig' %}
 
 {% block body %}
+    {% for message in app.flashes('notice') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
     <h1>Voici le récapitulatif de votre commande : </h1>
 
     <table class="table">

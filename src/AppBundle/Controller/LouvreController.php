@@ -71,6 +71,10 @@ class LouvreController extends Controller
                     'booking' => $booking
                 ));
             }else{
+                $this->addFlash('notice', ' Erreur survenue pendant le paiement , veuillez réessayer ultérieurement');
+                return $this->render('Louvre/recap.html.twig', array(
+                    'booking' => $booking
+                ));
 // TODO quoi faire si y'a un pb ???
 
             }

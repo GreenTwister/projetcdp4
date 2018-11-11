@@ -45,5 +45,25 @@ class NotFullCapacityValidatorTest extends ValidatorTestAbstract
         ];
     }
 
+    /**
+     * @dataProvider TicketsKo
+     */
+    public function testValidationKo($nbTickets)
+    {
+        $notFullCapacityConstraint = new NotFullCapacity();
+        $notFullCapacityValidator = $this->initValidator();
+        $notFullCapacityValidator->validate($nbTickets, $notFullCapacityConstraint);
+
+    }
+
+    public function TicketsKo()
+    {
+        return [
+            ['1000'],
+            ['19'],
+            ['24'],
+        ];
+    }
+
 
 }
