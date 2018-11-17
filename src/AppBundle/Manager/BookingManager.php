@@ -15,6 +15,7 @@ use AppBundle\Service\PaymentInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BookingManager
 {
@@ -36,13 +37,18 @@ class BookingManager
      * @var PriceCalculator
      */
     private $priceCalculator;
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
 
     public function __construct(
         SessionInterface $session,
         EntityManagerInterface $em,
         PaymentInterface $payment,
         PriceCalculator $priceCalculator,
-        MailManager $mailManager
+        MailManager $mailManager,
+        ValidatorInterface $validator
     )
     {
         $this->session = $session;
@@ -50,6 +56,7 @@ class BookingManager
         $this->payment = $payment;
         $this->mailManager = $mailManager;
         $this->priceCalculator = $priceCalculator;
+        $this->validator = $validator;
     }
 
 
@@ -69,11 +76,15 @@ class BookingManager
         return $booking;
     }
 
-    public function getCurrentBooking()
+    public function getCurrentBooking($step = null)
     {
         $booking = $this->session->get(self::SESSION_BOOKING_KEY);
         if (!$booking instanceof Booking) {
             throw new NotFoundHttpException("Pas de commande en cours");
+        }
+
+        if ($step && count($this->validator->validate($booking,null,[$step]))) {
+            throw new NotFoundHttpException("La commande courrante n'est pas valide");
         }
 
         return $booking;

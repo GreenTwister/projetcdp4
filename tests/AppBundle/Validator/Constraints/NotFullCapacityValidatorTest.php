@@ -51,7 +51,7 @@ class NotFullCapacityValidatorTest extends ValidatorTestAbstract
     public function testValidationKo($nbTickets)
     {
         $notFullCapacityConstraint = new NotFullCapacity();
-        $notFullCapacityValidator = $this->initValidator();
+        $notFullCapacityValidator = $this->initValidator($notFullCapacityConstraint);
         $notFullCapacityValidator->validate($nbTickets, $notFullCapacityConstraint);
 
     }
@@ -59,9 +59,7 @@ class NotFullCapacityValidatorTest extends ValidatorTestAbstract
     public function TicketsKo()
     {
         return [
-            ['1000'],
-            ['19'],
-            ['24'],
+            [4],
         ];
     }
 

@@ -41,7 +41,7 @@ class LouvreController extends Controller
      */
     public function ticketsAction(Request $request, BookingManager $bookingManager)
     {
-        $booking = $bookingManager->getCurrentBooking();
+        $booking = $bookingManager->getCurrentBooking("step1");
 
         $form = $this->createForm(BookingFillTicketsType::class, $booking);
         $form->handleRequest($request);
@@ -64,7 +64,7 @@ class LouvreController extends Controller
      */
     public function recapAction(BookingManager $bookingManager,Request $request)
     {
-        $booking = $bookingManager->getCurrentBooking();
+        $booking = $bookingManager->getCurrentBooking("step2");
         if ($request->isMethod('POST')) {
             if ($bookingManager->payment($booking)) {
                 return $this->render('Louvre/final.html.twig', array(
@@ -75,13 +75,21 @@ class LouvreController extends Controller
                 return $this->render('Louvre/recap.html.twig', array(
                     'booking' => $booking
                 ));
-// TODO quoi faire si y'a un pb ???
+
 
             }
         }
         return $this->render('Louvre/recap.html.twig', array(
             'booking' => $booking
         ));
+    }
+
+    /**
+     * @Route("/mentions", name="mentions")
+     */
+    public function mentionAction()
+    {
+        return $this->render('Louvre/mentions.html.twig');
     }
 
 }

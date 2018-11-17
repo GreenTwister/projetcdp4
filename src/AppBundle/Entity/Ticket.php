@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Ticket
  *
@@ -24,6 +26,7 @@ class Ticket
      * @var string
      *
      * @ORM\Column(name="Name", type="string", length=255)
+     * @Assert\Length(min="2", groups={"step2"})
      */
     private $name;
 
@@ -59,6 +62,7 @@ class Ticket
      * @var int
      *
      * @ORM\Column(name="Price", type="integer")
+     * @Assert\NotNull(groups={"step3"})
      */
     private $price;
 

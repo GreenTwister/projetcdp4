@@ -1,11 +1,11 @@
 {% extends 'layout.html.twig' %}
 
 {% block body %}
-
+    <h1> Confirmer l'identité des billets </h1>
     {{ form_start(formTicket) }}
 
     {{ form_row(formTicket) }}
-    <input type="submit" value="Commmander" class="btn btn-success"/>
+    <input type="submit" value="Commander" class="btn btn-success"/>
 
     {#Cliquez <a href=" {{ path('recap') }}">ici </a>#}
     {{ form_end(formTicket) }}

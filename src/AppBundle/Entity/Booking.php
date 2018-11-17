@@ -12,8 +12,8 @@ use AppBundle\Validator\Constraints as LouvreAssert;
  *
  * @ORM\Table(name="booking")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BookingRepository")
- * @LouvreAssert\ValidHalfDay()
- * @LouvreAssert\NotFullCapacity()
+ * @LouvreAssert\ValidHalfDay(groups={"step1"})
+ * @LouvreAssert\NotFullCapacity(groups={"step1"})
  */
 class Booking
 {
@@ -30,10 +30,10 @@ class Booking
      * @var \DateTime
      *
      * @ORM\Column(name="DateVisit", type="datetime")
-     * @Assert\GreaterThanOrEqual("today")
-     * @LouvreAssert\NotTuesday()
-     * @LouvreAssert\NotSunday()
-     * @LouvreAssert\ClosedDay()
+     * @Assert\GreaterThanOrEqual("today", groups={"step1"})
+     * @LouvreAssert\NotTuesday(groups={"step1"})
+     * @LouvreAssert\NotSunday(groups={"step1"})
+     * @LouvreAssert\ClosedDay(groups={"step1"})
      */
     private $dateVisit;
 
@@ -41,7 +41,7 @@ class Booking
      * @var int
      *
      * @ORM\Column(name="NbrTicket", type="integer")
-     * @Assert\Range(min=1,max=6)
+     * @Assert\Range(min=1,max=6,groups={"step1"})
      */
     private $nbrTicket;
 
@@ -49,6 +49,7 @@ class Booking
      * @var int
      *
      * @ORM\Column(name="TypeTicket", type="string")
+     *
      */
     private $typeTicket;
 
@@ -56,6 +57,8 @@ class Booking
      * @var string
      *
      * @ORM\Column(name="Email", type="string", length=255)
+     * @Assert\Email(groups={"step1"})
+     * @Assert\NotNull(groups={"step1"})
      */
     private $email;
 
@@ -63,6 +66,7 @@ class Booking
      * @var int
      *
      * @ORM\Column(name="NumBooking", type="integer", unique=true)
+     * @Assert\Email(groups={"step1"})
      */
     private $numBooking;
 
@@ -70,12 +74,14 @@ class Booking
      * @var int
      *
      * @ORM\Column(name="total", type="integer")
+     * @Assert\NotNull(groups={"step3"})
      */
     private $total;
 
     /**
      * @ORM\OneToMany(targetEntity="Ticket", mappedBy="booking", cascade={"persist"})
-     * @Assert\Valid()
+     * @Assert\Valid(groups={"step2","step3"})
+     * @Assert\Count(min="1", groups={"step2","step3"})
      */
     private $tickets;
 
