@@ -99,7 +99,6 @@ class BookingManager
             return true;
         }
 
-
         return false;
     }
 

@@ -38,7 +38,7 @@ class BookingFillTicketsType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'sabate_louvrebundle_booking';
+//        return 'sabate_louvrebundle_booking';
     }
 
 
