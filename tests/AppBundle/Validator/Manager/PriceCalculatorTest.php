@@ -28,7 +28,7 @@ class PriceCalculatorTest extends TestCase
      */
     public function testGetPriceForAge($age,$expectedPrice)
     {
-        $this->assertSame(16, $this->priceCalculator->getPriceForAge(50));
+        $this->assertSame($expectedPrice, $this->priceCalculator->getPriceForAge($age));
     }
 
     public function agesPricesProvider()

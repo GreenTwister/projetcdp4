@@ -19,10 +19,10 @@ class NotFullCapacityValidatorTest extends ValidatorTestAbstract
 {
     protected function getValidatorInstance()
     {
-        $em = $this->getMockBuilder(EntityManager::class)
+        $em1 = $this->getMockBuilder(EntityManager::class)
         ->disableOriginalConstructor()
             ->getMock();
-        return new NotFullCapacityValidator($em);
+        return new NotFullCapacityValidator($em1);
     }
 
     /**

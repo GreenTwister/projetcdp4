@@ -24,7 +24,7 @@ class BookingManager
      * @var SessionInterface
      */
     private $session;
-    private $em;
+    private $em1;
     /**
      * @var PaymentInterface
      */
@@ -44,7 +44,7 @@ class BookingManager
 
     public function __construct(
         SessionInterface $session,
-        EntityManagerInterface $em,
+        EntityManagerInterface $em1,
         PaymentInterface $payment,
         PriceCalculator $priceCalculator,
         MailManager $mailManager,
@@ -52,7 +52,7 @@ class BookingManager
     )
     {
         $this->session = $session;
-        $this->em = $em;
+        $this->em1 = $em1;
         $this->payment = $payment;
         $this->mailManager = $mailManager;
         $this->priceCalculator = $priceCalculator;
@@ -104,8 +104,8 @@ class BookingManager
 
     public function flushBooking($booking)
     {
-        $this->em->persist($booking);
-        $this->em->flush($booking);
+        $this->em1->persist($booking);
+        $this->em1->flush($booking);
     }
 
     public function computePrice($booking)

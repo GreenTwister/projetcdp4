@@ -20,13 +20,13 @@ class LouvreControllerTest extends WebTestCase
     public function testHome()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/');
+        $client->request('GET', '/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     public function testTicketsKO()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/tickets');
+        $client->request('GET', '/tickets');
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
 

@@ -7,7 +7,7 @@ use AppBundle\Entity\Booking;
 
 class PriceCalculator
 {
-    const DemiCoef = 0.5;
+    const DEMICOEF = 0.5;
     private $tarifGratuit;
     private $tarifEnfant;
     private $tarifNormal;
@@ -43,7 +43,7 @@ class PriceCalculator
             }
 
             if ($booking->getTypeTicket() == 'Demi-journée'){
-                $price = $price * PriceCalculator::DemiCoef;
+                $price = $price * PriceCalculator::DEMICOEF;
             }
             $cumulPrice += $price;
             $ticket->setPrice($price);
