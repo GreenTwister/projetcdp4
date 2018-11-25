@@ -16,16 +16,37 @@ use PHPUnit\Framework\TestCase;
 
 class PriceCalculatorTest extends TestCase
 {
+    /**
+     * @var PriceCalculator
+     */
+    private $priceCalculator;
 
-    public function testGetPriceForAge()
+    /**
+     * @dataProvider agesPricesProvider
+     * @param $age
+     * @param $expectedPrice
+     */
+    public function testGetPriceForAge($age,$expectedPrice)
     {
-        $price = new PriceCalculator(0,8,16,12,10);
-        $this->assertSame(16, $price->getPriceForAge(50));
+        $this->assertSame(16, $this->priceCalculator->getPriceForAge(50));
     }
+
+    public function agesPricesProvider()
+    {
+        return [
+            [50,16],
+            [3,0],
+        ];
+    }
+
+    protected function setUp()
+    {
+        $this->priceCalculator = new PriceCalculator(0,8,16,12,10);
+    }
+
 
     public function testGetTotalPriceForBooking()
     {
-        $price = new PriceCalculator(0,8,16,12,10);
         $booking = new Booking();
         $booking->setNbrTicket(2);
 
@@ -38,7 +59,7 @@ class PriceCalculatorTest extends TestCase
         $booking->addTicket($ticket);
         $booking->addTicket($ticket2);
 
-        $this->assertSame(28, $price->getTotalPriceForBooking($booking));
+        $this->assertSame(28, $this->priceCalculator->getTotalPriceForBooking($booking));
     }
 
 }

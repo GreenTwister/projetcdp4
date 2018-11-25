@@ -44,28 +44,4 @@ class LouvreControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('.form-error-message')->count() >= 1);
     }
 
-    public function testFormTicket()
-    {
-        $client = static::createClient();
-        $booking = new Booking();
-        $booking->setNbrTicket(1);
-        $booking->setEmail("toto@toto.fr");
-        $booking->setDateVisit(new \DateTime('2018-11-12'));
-        $booking->addTicket(new Ticket());
-        $client->getContainer()->get('session')->set(BookingManager::SESSION_BOOKING_KEY, $booking);
-        $crawler = $client->request('GET', '/tickets');
-        $form = $crawler->selectButton('Commander')->form(array(
-            'sabate_louvrebundle_booking[tickets][0][name]' => 'Boucher',
-            'sabate_louvrebundle_booking[tickets][0][surname]' => 'Jean',
-            'sabate_louvrebundle_booking[tickets][0][birthDate][day]' => 20,
-            'sabate_louvrebundle_booking[tickets][0][birthDate][month]' => 10,
-            'sabate_louvrebundle_booking[tickets][0][birthDate][year]' => 1992,
-            'sabate_louvrebundle_booking[tickets][0][nationality]' => 'France',
-            'sabate_louvrebundle_booking[tickets][0][tarifRed]' => 1
-        ));
-
-        $crawler = $client->submit($form);
-        $crawler = $client->followRedirect();
-        $this->assertSame(1,$crawler->filter('h1')->count());
-    }
 }
